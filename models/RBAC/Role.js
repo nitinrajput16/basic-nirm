@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const RoleSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     permissions: [{
         type: Schema.Types.ObjectId,
@@ -13,7 +14,7 @@ const RoleSchema = new Schema({
 });
 
 RoleSchema.methods.hasPermission = function (permission) {
-    return mongoose.Model("Role").findOne({ permission });
+    return this.permissions.indexOf(permission) !== -1;
 }
 
 module.exports = new mongoose.model("Role", RoleSchema);
